@@ -10,88 +10,24 @@ using namespace std;
 SDL_Window * window;
 
 //uma array de 3 vetores que representam vertices
-GLfloat vertices[] = {
-	0.0f,1.0f,0.0f,
-	-1.0f,-1.0f,0.0f,
-	1.0f,-1.0f,0.0f
-};
 
-GLuint LoadShaders(const char *vertex_file_path, const char *fragment_file_path)
-{
-	GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
-	GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
-	string VertexShaderCode;
-	string FragmentShaderCode;
-
-	ifstream VertexShaderStream(vertex_file_path,ios::in);
-	if(VertexShaderStream.is_open())
-	{
-		string line = "";
-		while(getline(VertexShaderStream,line))
-			VertexShaderCode += line + "\n";
-		VertexShaderStream.close();		
-	}
-	
-	ifstream FragmentShaderStream(fragment_file_path,ios::in);
-	if(FragmentShaderStream.is_open())
-	{
-		string line = "";
-		while(getline(FragmentShaderStream,line))
-			FragmentShaderCode += line + "\n";
-		FragmentShaderStream.close();		
-	}
-	
-	GLint result = GL_FALSE;
-	int InfoLogLenght;
-
-	//Compilar Shader
-	cout << "Compilling shader: " << vertex_file_path << endl;
-	char const * VertexSourcePointer = VertexShaderCode.c_str();
-	glShaderSource(vertexShaderID,1,&VertexSourcePointer,NULL);
-	glCompileShader(vertexShaderID);
-	cout << VertexShaderCode << endl;
-
-	// Check Vertex Shader
-	glGetShaderiv(vertexShaderID,GL_COMPILE_STATUS,&result);
-	glGetShaderiv(vertexShaderID,GL_INFO_LOG_LENGTH,&InfoLogLenght);
-	vector<char> vertexShaderErrorMessage(InfoLogLenght);
-	glGetShaderInfoLog(vertexShaderID,InfoLogLenght,NULL,&vertexShaderErrorMessage[0]);
-	cout << &vertexShaderErrorMessage[0] << endl;
-
-	//Compile fragment Shader
-	cout << "Compilling Shader: " << fragment_file_path << endl;
-	char const * fragmentSourcePointer = FragmentShaderCode.c_str();
-	glShaderSource(fragmentShaderID,1,&fragmentSourcePointer,NULL);
-	glCompileShader(fragmentShaderID);
-	cout << FragmentShaderCode << endl;
-
-	//Check Fragment Shader
-	glGetShaderiv(fragmentShaderID,GL_COMPILE_STATUS,&result);
-	glGetShaderiv(fragmentShaderID,GL_INFO_LOG_LENGTH,&InfoLogLenght);
-	vector<char> fragmentShaderErrorMessage(InfoLogLenght);
-	glGetShaderInfoLog(fragmentShaderID,InfoLogLenght,NULL,&fragmentShaderErrorMessage[0]);
-	cout << &fragmentShaderErrorMessage[0] << endl;
-
-	//Link to the program
-	cout << "Linking program" << endl;
-	GLuint programID = glCreateProgram();
-	glAttachShader(programID,vertexShaderID);
-	glAttachShader(programID,fragmentShaderID);
-	glLinkProgram(programID);
-
-	// check the program
-	glGetProgramiv(programID,GL_LINK_STATUS,&result);
-	glGetProgramiv(programID,GL_INFO_LOG_LENGTH,&InfoLogLenght);
-	vector<char> ProgramErrorMessage(InfoLogLenght);
-	glGetProgramInfoLog(programID,InfoLogLenght,NULL,&ProgramErrorMessage[0]);
-	cout << ProgramErrorMessage[0] << endl;
-
-	glDeleteShader(vertexShaderID);
-	glDeleteShader(fragmentShaderID);
-
-	return programID;
-
-}
+// Shader sources
+const GLchar* vertexSource =
+    "#version 150 core\n"
+    "in vec2 position;"
+    "in vec3 color;"
+    "out vec3 Color;"
+    "void main() {"
+    "   Color = color;"
+    "   gl_Position = vec4(position, 0.0, 1.0);"
+    "}";
+const GLchar* fragmentSource =
+    "#version 150 core\n"
+    "in vec3 Color;"
+    "out vec4 outColor;"
+    "void main() {"
+    "   outColor = vec4(Color, 1.0);"
+    "}";
 
 
 int main(int argc, char** argv)
@@ -110,26 +46,67 @@ int main(int argc, char** argv)
 
 	SDL_GLContext context = SDL_GL_CreateContext(window);
 
-	glewExperimental = true;
-	glewInit();
+ // Initialize GLEW
+    glewExperimental = GL_TRUE;
+    glewInit();
 
-// TUTORIAL PART
+    // Create Vertex Array Object
+    GLuint vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
 
-	GLuint VertexArrayID;
-	glGenVertexArrays(1,&VertexArrayID);
-	glBindVertexArray(VertexArrayID);
+    // Create a Vertex Buffer Object and copy the vertex data to it
+    GLuint vbo;
+    glGenBuffers(1, &vbo);
 
-	GLuint vertexBuffer;
+    GLfloat vertices[] = {
+        -0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // Top-left
+         0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // Top-right
+         0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Bottom-right
+        -0.5f, -0.5f, 1.0f, 1.0f, 1.0f  // Bottom-left
+    };
 
-	glGenBuffers(1,&vertexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+    // Create an element array
+    GLuint ebo;
+    glGenBuffers(1, &ebo);
 
-	GLuint programID = LoadShaders("vertexshader.glsl","fragmentshader.glsl");
+    GLuint elements[] = {
+        0, 1, 2,
+        2, 3, 0
+    };
 
-// ENDS THERE
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
 
+    // Create and compile the vertex shader
+    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexSource, NULL);
+    glCompileShader(vertexShader);
+
+    // Create and compile the fragment shader
+    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
+    glCompileShader(fragmentShader);
+
+    // Link the vertex and fragment shader into a shader program
+    GLuint shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glBindFragDataLocation(shaderProgram, 0, "outColor");
+    glLinkProgram(shaderProgram);
+    glUseProgram(shaderProgram);
+
+    // Specify the layout of the vertex data
+    GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
+    glEnableVertexAttribArray(posAttrib);
+    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0);
+
+    GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
+    glEnableVertexAttribArray(colAttrib);
+    glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
 
 
 	SDL_Event windowEvent;
@@ -141,29 +118,24 @@ int main(int argc, char** argv)
 			if(windowEvent.type == SDL_QUIT) break;
 		}
 	
-		glClear(GL_COLOR_BUFFER_BIT);
-		glClearColor(1.0f,0.0,0.0,1.0f);
-		
-		glUseProgram(programID);
-		glEnableVertexAttribArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
-		glVertexAttribPointer(
-				0,
-				3,
-				GL_FLOAT,
-				GL_FALSE,
-				0,
-				0);
-		glDrawArrays(GL_TRIANGLES,0,3);
-		
-		glDisableVertexAttribArray(0);
+	 // Clear the screen to black
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-		glUseProgram(0);
+        // Draw a rectangle from the 2 triangles using 6 indices
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	
 		SDL_GL_SwapWindow(window);
 	}
 
+	glDeleteProgram(shaderProgram);
+    glDeleteShader(fragmentShader);
+    glDeleteShader(vertexShader);
 
-	SDL_GL_DeleteContext(context);
+    glDeleteBuffers(1, &ebo);
+    glDeleteBuffers(1, &vbo);
+
+    glDeleteVertexArrays(1, &vao);
 
 	SDL_Quit();
 

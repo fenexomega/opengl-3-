@@ -1,7 +1,7 @@
-#version 330 core
-out vet3 color;
+#version 330 core 
+out vet4 color;
 
 void main()
 {
-color = vec3(1,0,0);
+	color = vec4(1,0,0,1);
 }
