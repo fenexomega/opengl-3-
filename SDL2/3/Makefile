@@ -1,6 +1,6 @@
 CXX=g++
 LIBS=-lSDL2 -lGLEW -lGL
-CFLAGS=-Wall -g
+CFLAGS=-Wall -g -std=c++11
 
 all: build run
 
