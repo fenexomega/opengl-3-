@@ -3,6 +3,7 @@
 #include <SDL2/SDL_opengl.h>
 #include <iostream>
 #include <fstream>
+#include <cmath>
 using namespace std;
 
 
@@ -117,19 +118,31 @@ int main(int argc, char** argv)
 	GLuint posAttrib = glGetAttribLocation(shaderProgram,"position");
 	glVertexAttribPointer(posAttrib,2,GL_FLOAT, GL_FALSE,0,0);
 
-
+	//Enable the in attrib
 	glEnableVertexAttribArray(posAttrib);
+
+
+	//Get the triangleColor uniform
+	GLint triangleColor = glGetUniformLocation(shaderProgram,"triangleColor");
+	//Change the uniform value
+	glUniform3f(triangleColor,1.0f,0.0f,0.0f); //Red color
 
 
 	SDL_Event windowEvent;
 
+	float r,g,b;
+	r = rand()%360;
+	g = rand()%360;
+	b = rand()%360;
 	while(true)
 	{
+		r += 0.1f;
+		glUniform3f(triangleColor,abs(sin(r)),abs(sin(g)),abs(sin(b))); //Red color
 		if(SDL_PollEvent(&windowEvent))
 		{
 			if(windowEvent.type == SDL_QUIT) break;
 		}
-	
+		SDL_Delay(1000.0f/30.0f);
 		glDrawArrays(GL_TRIANGLES,0,3);	
 		SDL_GL_SwapWindow(window);
 	}
