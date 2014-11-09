@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <glm/glm.hpp>
 using namespace std;
 
 
@@ -61,7 +62,7 @@ int main(int argc, char** argv)
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 	
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,1);
 
@@ -74,43 +75,42 @@ int main(int argc, char** argv)
     glewInit();
 
 	float vertices[]{
-		-0.5f, 0.5f, //triangle x and y
-		1.0f,0.0f,0.0f, // Color R,G,B
-		
-		-0.5f,-0.5f,
-		0.0f,1.0f,0.0f,
+		 0.5f, 0.5f,0.5f,
+		-0.5f, 0.5f,0.5f,
+		-0.5f,-0.5f,0.5f,
+		 0.5f,-0.5f,0.5f,
 
-		0.5f,-0.5f,
-		0.0f,0.0f,1.0f,
+		 0.5f, 0.5f,-0.5f,
+		-0.5f, 0.5f,-0.5f,
+		-0.5f,-0.5f,-0.5f,
+		 0.5f,-0.5f,-0.5f
 
-		0.5f,0.5f,
-		1.0f,1.0f,1.0f
 	};
 
-	GLuint elements[]
-	{
-		0,1,2,
-		2,0,3
+	GLuint elements[]{
+		0,1,2, 0,2,3,
+		4,5,6, 4,6,7,
+		4,5,1, 4,1,0,
+		7,6,2, 7,2,3,
+		4,0,3, 4,3,7,
+		5,1,2, 5,2,6
 	};
 
 
-
-	//Vertex Array Data
 	GLuint vao;
 	glGenVertexArrays(1,&vao);
 	glBindVertexArray(vao);
-	
 	//Vertex Buffer
 	GLuint vbo;
 	glGenBuffers(1,&vbo);
 	glBindBuffer(GL_ARRAY_BUFFER,vbo);
 	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
-
+	
 	GLuint ebo;
 	glGenBuffers(1,&ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-			sizeof(elements),elements,GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(elements),elements,GL_STATIC_DRAW);
+
 	//carregar Shader de vertex
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	const GLchar * vertexSource = LoadFileIntoString("vertexshader.glsl");
@@ -139,37 +139,31 @@ int main(int argc, char** argv)
 
 	//get vec2 from shaderProgram
 	GLuint posAttrib = glGetAttribLocation(shaderProgram,"position");
+	glVertexAttribPointer(posAttrib,3,GL_FLOAT, GL_FALSE,0,0);
+
+	//Enable the in attrib
 	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib,2,GL_FLOAT, GL_FALSE,5*sizeof(float),0);
-
-	GLuint colAttrib = glGetAttribLocation(shaderProgram,"color");
-	glEnableVertexAttribArray(colAttrib);
-	glVertexAttribPointer(colAttrib,3,GL_FLOAT,GL_FALSE,5*sizeof(float),(void *) (2*sizeof(float)));
-
 
 
 
 	SDL_Event windowEvent;
-	//DRAW CODE
+
 	while(true)
 	{
-		SDL_Delay(1000.0f/30.0f);
 		if(SDL_PollEvent(&windowEvent))
 		{
 			if(windowEvent.type == SDL_QUIT) break;
 		}
+		SDL_Delay(1000.0f/30.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		
-		glClearColor(0.0f,0.0f,0.0f,1.0f);
-		
-		glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
+		glClearColor(0,0,.5f,1.0f);
+	//	glDrawArrays(GL_TRIANGLES,0,4);
+		glDrawElements(GL_TRIANGLES,36,GL_UNSIGNED_INT,0);
 		SDL_GL_SwapWindow(window);
 	}
 
-	//Dispose
     glDeleteBuffers(1, &vbo);
-	glDeleteBuffers(1,&ebo);
-	glDeleteBuffers(1,&vao);
+
 	glDetachShader(vertexShader,shaderProgram);
 	glDetachShader(fragmentShader,shaderProgram);
 	glDeleteShader(vertexShader);
