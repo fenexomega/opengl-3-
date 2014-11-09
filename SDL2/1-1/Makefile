@@ -1,5 +1,5 @@
 CC=g++
-LIBS= -lSDL2 -lGL -lGLEW 
+LIBS= -lSDL2 -lGL -lGLEW  
 CFLAGS= -g -Wall -std=c++11
 
 all: build run

@@ -1,5 +1,6 @@
 #include "../common/display.h"
 #include <iostream>
+#include <glm/glm.hpp>
 
 char * vertexShader =
 {
@@ -25,9 +26,9 @@ int main()
 	Display display(0,0,1024,768,"Janela SDL");
 
 	float vertices[]{
-		 0.0f, 0.5f,
-		-0.5f, 0.0f,
-		 0.5,  0.0f
+		 0.0f, 1.0f,
+		-1.0f, 0.0f,
+		 1.0,  0.0f
 	};
 
 	GLuint vao;
@@ -62,8 +63,8 @@ int main()
 	
 	while(!display.UserWannaQuit())
 	{
-		display.CleanScreen(1.0,0,0,1.0);
-		glDrawArrays(GL_TRIANGLES,0,3);	
+		display.CleanScreen(0,0,0,1.0);
+		glDrawArrays(GL_POINTS,0,3);	
 		display.SwapBuffers();
 	}
 	
