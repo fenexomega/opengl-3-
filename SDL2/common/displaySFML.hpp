@@ -1,20 +1,19 @@
-#ifndef DISPLAY_H
-#define DISPLAY_H
+#ifndef DISPLAYSFML_H
+#define DISPLAYSFML_H
 
 #include <GL/glew.h>
 #include <iostream>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
-class Display
+class DisplaySFML
 {
 private:
 	unsigned int x,y;
 	unsigned int width,height;
 	std::string title;
 	sf::Window* window;
-public:
-	static bool initGL()
+	bool initGL()
 	{
 		bool flag = true;
 
@@ -24,7 +23,8 @@ public:
 
 	}
 
-	Display(int x,int y, int width, int height, std::string title)
+public:
+	DisplaySFML(int x,int y, int width, int height, std::string title)
 	{
 		this->x 	 = x;
 		this->y  	 = y;
@@ -37,8 +37,11 @@ public:
 		settings.antialiasingLevel = 2;
 		settings.majorVersion = 3;
 		settings.minorVersion = 1;
+		title.append(" - SFML");
 		window = new sf::Window(sf::VideoMode(width,height),title,sf::Style::Close,settings);
 
+		sf::Vector2i vetor(x,y);
+		window->setPosition(vetor);
 
 		glewExperimental = GL_TRUE;
 		glewInit();
@@ -55,6 +58,15 @@ public:
 		window->display();
 	}
 
+	void Delay(uint32_t ms)
+	{
+		sf::sleep(sf::milliseconds(ms));
+	}
+
+	void Quit()
+	{
+		window->close();
+	}
 
 	bool UserWannaQuit()
 	{
