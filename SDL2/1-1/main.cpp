@@ -1,4 +1,4 @@
-#include "../common/display.h"
+#include "../common/displaySFML.hpp"
 #include <iostream>
 #include <glm/glm.hpp>
 
@@ -22,10 +22,10 @@ char * fragmentShader =
 
 int main()
 {
-	Display::initSDLandGL();
+	Display::initGL();
 	Display display(0,0,1024,768,"Janela SDL");
 
-	float vertices[]{
+	float vertices[] = {
 		 0.0f, 1.0f,
 		-1.0f, 0.0f,
 		 1.0,  0.0f
@@ -64,9 +64,8 @@ int main()
 	while(!display.UserWannaQuit())
 	{
 		display.CleanScreen(0,0,0,1.0);
-		glDrawArrays(GL_POINTS,0,3);	
+		glDrawArrays(GL_TRIANGLES,0,3);	
 		display.SwapBuffers();
 	}
 	
-	SDL_Quit();
 }

@@ -1,7 +1,12 @@
+#ifndef DISPLAY_H
+#define DISPLAY_H
+
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h>
 #include <iostream>
+
+
 
 class Display
 {
@@ -11,16 +16,16 @@ private:
 	std::string title;
 	SDL_Window *window;
 public:
-	static bool initSDLandGL()
+	static bool initGL()
 	{
 		bool flag = true;
 		if(SDL_Init(SDL_INIT_VIDEO) != 0)
 			flag = false;
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+		
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3.3);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,1);
-		
 		return flag;
 	}
 
@@ -61,3 +66,5 @@ public:
 		return false;
 	}
 };
+
+#endif

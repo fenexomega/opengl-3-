@@ -1,12 +1,17 @@
 CXX=g++
-LIBS=-lSDL2 -lGLEW -lGL
+SFML=`pkg-config sfml-all --libs --cflags`i
+SDL2=`sdl2-config --libs --cflags`
+LIBS= -lGLEW -lGL
 CFLAGS=-Wall -g -std=c++11
 
 all: build run
 
 build:
-	$(CXX) *.cpp -o main.out $(CFLAGS) $(LIBS)
-
+ifeq (LIB,SFML)
+	$(CXX) *.cpp -o main.out $(CFLAGS) $(LIBS) $(SFML)
+else
+	$(CXX) *.cpp -o main.out $(CFLAGS) $(LIBS) $(SDL2)	
+endif
 run:
 	./main.out
 
