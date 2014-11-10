@@ -7,11 +7,7 @@ CFLAGS=-Wall -g -std=c++11
 all: build run
 
 build:
-ifeq ($(LIB),SFML)
-	$(CXX) *.cpp -o main.out $(CFLAGS) $(LIBS) $(SFML)
-else
-	$(CXX) *.cpp -o main.out $(CFLAGS) $(LIBS) $(SDL2)	
-endif
+	$(CXX) *.cpp -o main.out $(CFLAGS) $(LIBS) $(SFML) $(SDL2)
 run:
 	./main.out
 

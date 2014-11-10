@@ -1,4 +1,5 @@
 #include "../common/displaySFML.hpp"
+#include "../common/displaySDL2.hpp"
 #include <iostream>
 #include <glm/glm.hpp>
 
@@ -22,8 +23,7 @@ char * fragmentShader =
 
 int main()
 {
-	Display::initGL();
-	Display display(0,0,1024,768,"Janela SDL");
+	DisplaySFML display(100,100,1024,768,"Janela Triangulos");
 
 	float vertices[] = {
 		 0.0f, 1.0f,
@@ -63,9 +63,12 @@ int main()
 	
 	while(!display.UserWannaQuit())
 	{
+		display.Delay(1000/30);
 		display.CleanScreen(0,0,0,1.0);
 		glDrawArrays(GL_TRIANGLES,0,3);	
 		display.SwapBuffers();
 	}
+
+	display.Quit();
 	
 }
