@@ -15,6 +15,7 @@ private:
 	unsigned int width,height;
 	std::string title;
 	SDL_Window *window;
+	SDL_GLContext context;
 	bool initGL()
 	{
 		bool flag = true;
@@ -49,7 +50,7 @@ public:
 				width,height,
 				SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 
-		SDL_GLContext context = SDL_GL_CreateContext(window);
+		context = SDL_GL_CreateContext(window);
 
 		glewExperimental = GL_TRUE;
 		glewInit();
@@ -82,6 +83,7 @@ public:
 
 	void Quit()
 	{
+		SDL_GL_DeleteContext(context);
 		SDL_Quit();
 	}
 };

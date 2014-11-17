@@ -35,14 +35,23 @@ int main()
 
 
 	GLuint posAttrib = glGetAttribLocation(program,"position");
-
+	glEnableVertexAttribArray(posAttrib);
+	glVertexAttribPointer(posAttrib,2,GL_FLOAT,GL_FALSE,3*sizeof(float),0);
 	while(!display.UserWannaQuit())
 	{
 		display.CleanScreen(0,0,0,1);
+		display.Delay(1000/24);
+		glDrawArrays(GL_TRIANGLES,0,3);
 
 		display.SwapBuffers();
 	}
 
+	glDetachShader(program,vertex.getShaderID());
+	vertex.~Shader();
+	glDetachShader(program,fragment.getShaderID());
+	fragment.~Shader();
+	glDeleteProgram(program);
+	display.Quit();
 
-	return 0;
+	return EXIT_SUCCESS;
 }

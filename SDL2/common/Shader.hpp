@@ -47,6 +47,11 @@ public:
 
 	}
 
+	~Shader()
+	{
+		glDeleteShader(shaderID);
+	}
+
 	const char * GetShaderErrors()
 	{
 		errors = NULL;

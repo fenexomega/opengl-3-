@@ -1,5 +1,5 @@
 #version 140 
-out vec2 position;
+in vec2 position;
 
 void main()
 {
