@@ -153,11 +153,11 @@ int main(int argc, char** argv)
 	//DRAW CODE
 	while(true)
 	{
-		SDL_Delay(1000.0f/30.0f);
 		if(SDL_PollEvent(&windowEvent))
 		{
 			if(windowEvent.type == SDL_QUIT) break;
 		}
+		SDL_Delay(1000.0f/30.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		
 		glClearColor(0.0f,0.0f,0.0f,1.0f);
