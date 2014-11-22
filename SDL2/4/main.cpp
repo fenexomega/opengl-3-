@@ -29,9 +29,9 @@ const char * LoadFileIntoString(string filepath)
 	do
 	{
 		getline(file,line);
-			*content += line + "\n"; 			
+			*content += line + "\n";
 	}while(!file.eof());
-	
+
 	file.close();
 
 	return content->c_str();
@@ -52,7 +52,7 @@ void ShowShaderLog(GLuint shader)
 		std::cerr << "!!! Compile log = " << log << std::endl;
 		delete log;
 	}
-	
+
 }
 
 int main(int argc, char** argv)
@@ -62,7 +62,7 @@ int main(int argc, char** argv)
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-	
+
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,1);
 
 	window = SDL_CreateWindow("Janela", SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,1024,768,SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN);
@@ -76,7 +76,7 @@ int main(int argc, char** argv)
 	float vertices[]{
 		-0.5f, 0.5f, //triangle x and y
 		1.0f,0.0f,0.0f, // Color R,G,B
-		
+
 		-0.5f,-0.5f,
 		0.0f,1.0f,0.0f,
 
@@ -99,7 +99,7 @@ int main(int argc, char** argv)
 	GLuint vao;
 	glGenVertexArrays(1,&vao);
 	glBindVertexArray(vao);
-	
+
 	//Vertex Buffer
 	GLuint vbo;
 	glGenBuffers(1,&vbo);
@@ -116,7 +116,7 @@ int main(int argc, char** argv)
 	const GLchar * vertexSource = LoadFileIntoString("vertexshader.glsl");
 	glShaderSource(vertexShader,1,&vertexSource,NULL);
 	glCompileShader(vertexShader);
-	ShowShaderLog(vertexShader);	
+	ShowShaderLog(vertexShader);
 
 	//Carregar Shader de fragment
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -159,9 +159,9 @@ int main(int argc, char** argv)
 		}
 		SDL_Delay(1000.0f/30.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		
+
 		glClearColor(0.0f,0.0f,0.0f,1.0f);
-		
+
 		glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
 		SDL_GL_SwapWindow(window);
 	}

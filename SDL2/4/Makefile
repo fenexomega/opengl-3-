@@ -10,10 +10,10 @@ build:
 ifeq (LIB,SFML)
 	$(CXX) *.cpp -o main.out $(CFLAGS) $(LIBS) $(SFML)
 else
-	$(CXX) *.cpp -o main.out $(CFLAGS) $(LIBS) $(SDL2)	
+	$(CXX) *.cpp -o main.out $(CFLAGS) $(LIBS) $(SDL2)
 endif
 run:
 	./main.out
 
-clean: 
+clean:
 	rm -f *.o main.out
