@@ -1,0 +1,1 @@
+clang++   -std=c++11 -g    CMakeFiles/1-6.dir/src/DisplaySDL2.cpp.o CMakeFiles/1-6.dir/src/main.cpp.o CMakeFiles/1-6.dir/src/DisplaySFML.cpp.o  -o 1-6 -rdynamic -lGLEW -lSDL2 -lpthread -lGLU -lGL -lSM -lICE -lX11 -lXext -lsfml-system -lsfml-window -lsfml-graphics -lsfml-network -lsfml-audio -lSDL2_image 

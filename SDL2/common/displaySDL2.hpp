@@ -1,8 +1,15 @@
 #ifndef DISPLAYSDL2_H
 #define DISPLAYSDL2_H
 
-#include <SDL2/SDL.h>
+
+#ifdef CLANG_COMPLETE_ONLY
+#include <GL/gl.h>
+#include <GL/glext.h>
+#else
 #include <GL/glew.h>
+#endif
+
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include <iostream>
 

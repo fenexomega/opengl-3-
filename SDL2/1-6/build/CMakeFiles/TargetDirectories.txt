@@ -1,0 +1,1 @@
+/home/jordy/Projetos/Cpp/opengl/3.0+/SDL2/1-6/build/CMakeFiles/1-6.dir

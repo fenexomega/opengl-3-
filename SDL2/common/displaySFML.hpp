@@ -1,7 +1,14 @@
 #ifndef DISPLAYSFML_H
 #define DISPLAYSFML_H
 
+
+#ifdef CLANG_COMPLETE_ONLY
+#include <GL/gl.h>
+#include <GL/glext.h>
+#else
 #include <GL/glew.h>
+#endif
+
 #include <iostream>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
