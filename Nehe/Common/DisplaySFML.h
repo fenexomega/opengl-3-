@@ -1,18 +1,18 @@
 #ifndef DISPLAYSFML_H
 #define DISPLAYSFML_H
 
+#include "Display.h"
+
 #include <GL/glew.h>
 
 #include <iostream>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
-class DisplaySFML
+class DisplaySFML : public Display
 {
 private:
-	unsigned int x,y;
-	unsigned int width,height;
-	std::string title;
+
 	sf::Window* window;
     bool initGL();
 

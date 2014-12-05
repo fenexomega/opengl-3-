@@ -2,14 +2,10 @@
 #define DISPLAYSDL2_H
 
 #include "Display.h"
-
-
 #include <GL/glew.h>
-
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include <iostream>
-
 
 
 class DisplaySDL2 : public Display

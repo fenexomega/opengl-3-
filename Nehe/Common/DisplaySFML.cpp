@@ -12,13 +12,8 @@ bool DisplaySFML::initGL()
 
 }
 
-DisplaySFML::DisplaySFML(int x, int y, int width, int height, std::string title)
+DisplaySFML::DisplaySFML(int x, int y, int width, int height, std::string title) :  Display(x,y,width,height,title)
 {
-    this->x 	 = x;
-    this->y  	 = y;
-    this->width  = width;
-    this->height = height;
-    this->title  = title;
     sf::ContextSettings settings;
     settings.depthBits = 24;
     settings.stencilBits = 8;
