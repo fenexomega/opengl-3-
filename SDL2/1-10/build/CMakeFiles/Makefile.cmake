@@ -7,6 +7,8 @@ set(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
+  "../CMakeInclude/FindSDL2.cmake"
+  "../CMakeInclude/FindSDL2_image.cmake"
   "../CMakeLists.txt"
   "CMakeFiles/3.0.2/CMakeCCompiler.cmake"
   "CMakeFiles/3.0.2/CMakeCXXCompiler.cmake"
@@ -29,8 +31,6 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-3.0/Modules/FindOpenGL.cmake"
   "/usr/share/cmake-3.0/Modules/FindPackageHandleStandardArgs.cmake"
   "/usr/share/cmake-3.0/Modules/FindPackageMessage.cmake"
-  "/usr/share/cmake-3.0/Modules/FindSDL2.cmake"
-  "/usr/share/cmake-3.0/Modules/FindSDL2_image.cmake"
   "/usr/share/cmake-3.0/Modules/FindSFML.cmake"
   "/usr/share/cmake-3.0/Modules/FindThreads.cmake"
   "/usr/share/cmake-3.0/Modules/FindX11.cmake"
@@ -56,5 +56,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/1-6.dir/DependInfo.cmake"
+  "CMakeFiles/1-10.dir/DependInfo.cmake"
   )

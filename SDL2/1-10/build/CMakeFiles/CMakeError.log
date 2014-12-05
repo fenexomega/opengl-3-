@@ -1,0 +1,57 @@
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/jordy/Projetos/Cpp/opengl/3.0+/SDL2/1-10/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec997929771/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec997929771.dir/build.make CMakeFiles/cmTryCompileExec997929771.dir/build
+make[1]: Entering directory '/home/jordy/Projetos/Cpp/opengl/3.0+/SDL2/1-10/build/CMakeFiles/CMakeTmp'
+/usr/bin/cmake -E cmake_progress_report /home/jordy/Projetos/Cpp/opengl/3.0+/SDL2/1-10/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec997929771.dir/CheckSymbolExists.c.o
+/usr/bin/clang    -o CMakeFiles/cmTryCompileExec997929771.dir/CheckSymbolExists.c.o   -c /home/jordy/Projetos/Cpp/opengl/3.0+/SDL2/1-10/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTryCompileExec997929771
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec997929771.dir/link.txt --verbose=1
+/usr/bin/clang       CMakeFiles/cmTryCompileExec997929771.dir/CheckSymbolExists.c.o  -o cmTryCompileExec997929771 -rdynamic 
+CMakeFiles/cmTryCompileExec997929771.dir/CheckSymbolExists.c.o: In function `main':
+/home/jordy/Projetos/Cpp/opengl/3.0+/SDL2/1-10/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:(.text+0x19): undefined reference to `pthread_create'
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+CMakeFiles/cmTryCompileExec997929771.dir/build.make:88: recipe for target 'cmTryCompileExec997929771' failed
+make[1]: *** [cmTryCompileExec997929771] Error 1
+make[1]: Leaving directory '/home/jordy/Projetos/Cpp/opengl/3.0+/SDL2/1-10/build/CMakeFiles/CMakeTmp'
+Makefile:118: recipe for target 'cmTryCompileExec997929771/fast' failed
+make: *** [cmTryCompileExec997929771/fast] Error 2
+
+File /home/jordy/Projetos/Cpp/opengl/3.0+/SDL2/1-10/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/jordy/Projetos/Cpp/opengl/3.0+/SDL2/1-10/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec3452880104/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec3452880104.dir/build.make CMakeFiles/cmTryCompileExec3452880104.dir/build
+make[1]: Entering directory '/home/jordy/Projetos/Cpp/opengl/3.0+/SDL2/1-10/build/CMakeFiles/CMakeTmp'
+/usr/bin/cmake -E cmake_progress_report /home/jordy/Projetos/Cpp/opengl/3.0+/SDL2/1-10/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec3452880104.dir/CheckFunctionExists.c.o
+/usr/bin/clang   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTryCompileExec3452880104.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.0/Modules/CheckFunctionExists.c
+Linking C executable cmTryCompileExec3452880104
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3452880104.dir/link.txt --verbose=1
+/usr/bin/clang   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTryCompileExec3452880104.dir/CheckFunctionExists.c.o  -o cmTryCompileExec3452880104 -rdynamic -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+CMakeFiles/cmTryCompileExec3452880104.dir/build.make:88: recipe for target 'cmTryCompileExec3452880104' failed
+make[1]: *** [cmTryCompileExec3452880104] Error 1
+make[1]: Leaving directory '/home/jordy/Projetos/Cpp/opengl/3.0+/SDL2/1-10/build/CMakeFiles/CMakeTmp'
+Makefile:118: recipe for target 'cmTryCompileExec3452880104/fast' failed
+make: *** [cmTryCompileExec3452880104/fast] Error 2
+
+

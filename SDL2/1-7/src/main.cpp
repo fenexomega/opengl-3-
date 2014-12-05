@@ -1,8 +1,11 @@
 #include "DisplaySDL2.h"
 #include "DisplaySFML.h"
 #include <iostream>
+
 #include <glm/glm.hpp>
-#include <glm/common.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <SDL2/SDL_image.h>
 
 using namespace std;
@@ -14,10 +17,14 @@ char * vertexShaderSource = {
     "out vec3 Color;"
     "in vec2 texc;"
     "out vec2 Texcoord;"
+	"uniform mat4 model;"
+	"uniform mat4 view;"
+	"uniform mat4 proj;"
     "void main(){"
-    "gl_Position = vec4(pos,0.0,1.0);"
     "Color = vec3(color,color,color);"
-    "Texcoord = vec2(texc.x,-texc.y);}"
+    "Texcoord = vec2(texc.x,-texc.y);"
+    "gl_Position = proj* view * model * vec4(pos,0.0,1.0) ;"
+	"}"
 };
 
 char * fragmentShaderSource = 
@@ -34,6 +41,8 @@ char * fragmentShaderSource =
 
 int main()
 {
+	glm::mat4 trans;
+
     DisplaySDL2 display(0,0,1024,768,"Olá mundo");
     GLchar * glVersion = (GLchar *)glGetString(GL_VERSION);
     cout << glVersion << endl;
@@ -111,6 +120,20 @@ int main()
     glEnableVertexAttribArray(texAttrib);
     glVertexAttribPointer(texAttrib,2,GL_FLOAT,GL_FALSE,5*sizeof(float),(GLvoid *) (3*sizeof(float)) );
 
+	GLint uniTrans = glGetUniformLocation(program,"model");
+	GLint uniView  = glGetUniformLocation(program,"view");
+	GLint uniProj  = glGetUniformLocation(program,"proj");
+
+	glm::mat4 view = glm::lookAt(
+			glm::vec3(1.2f,1.2f,1.2f), //Position of the Camera
+			glm::vec3(  0,    0,   0), //Where camera is looking
+			glm::vec3(0.0f,0.0f,1.0f)); //Up vector
+
+	glUniformMatrix4fv(uniView,1,GL_FALSE,glm::value_ptr(view));
+
+	glm::mat4 proj = glm::perspective(45.0f,display.getRatio(),0.1f,100.0f);
+	glUniformMatrix4fv(uniProj,1,GL_FALSE,glm::value_ptr(proj));
+	
 
     GLuint tex;
     glGenTextures(1,&tex);
@@ -118,6 +141,8 @@ int main()
 
     glTexImage2D(GL_TEXTURE_2D,0,Mode,image->w,image->h,0,Mode,GL_UNSIGNED_BYTE,image->pixels );
 
+	SDL_FreeSurface(image);
+	
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
@@ -125,10 +150,12 @@ int main()
 
     while(!display.UserWannaQuit())
     {
-        display.CleanScreen(0,0,0,1.0f);
-        display.Delay(1000/60);
 
-        //        glDrawArrays(GL_TRIANGLES,0,3);
+        display.CleanScreen(0,0,0,1.0f);
+        display.Delay(1000/30);
+
+		trans = glm::rotate(trans,1.0f,glm::vec3(1.0f,0.0f,0.0f));
+		glUniformMatrix4fv(uniTrans,1,GL_FALSE,glm::value_ptr(trans));
         glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
 
         display.SwapBuffers();
@@ -140,7 +167,7 @@ int main()
     glDeleteShader(fragmentShaderID);
 
 
-    SDL_FreeSurface(image);
+
     glDeleteTextures(1,&tex);
     glDeleteBuffers(1,&ebo);
     glDeleteBuffers(1,&vbo);
