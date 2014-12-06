@@ -23,6 +23,8 @@ DisplaySDL2::DisplaySDL2(int x,int y, int width, int height, std::string title) 
 
 	glViewport(0,0,width,height);
 
+	PrintGLInfo();
+
 }
 
 void DisplaySDL2::CleanScreen(float r, float g, float b, float a)

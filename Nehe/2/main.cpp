@@ -1,4 +1,5 @@
-#include "../Common/Systems.h"
+#include "../Common/DisplaySDL2.h"
+#include "../Common/Shader.h"
 #include <iostream>
 #include <vector>
 #include <glm/glm.hpp>
@@ -52,19 +53,21 @@ int main()
 
 	Shader vertex("vertex.glsl",GL_VERTEX_SHADER);
 	Shader fragment("fragment.glsl",GL_FRAGMENT_SHADER);
+	
+	GLuint program = glCreateProgram();
 
-	Program program;
-	program.AttachShader(vertex);
-	program.AttachShader(fragment);
+	glAttachShader(program,vertex.getShaderId());
+	glAttachShader(program,fragment.getShaderId());
+	
+	glBindFragDataLocation(program,0,"outColor");
 
-	program.BindFragDataLocation("outColor",0);
 
-	program.Link();
-	program.Use();
+	glLinkProgram(program);
+	glUseProgram(program);
 
-	GLuint posAttrib = program.getAttrib("pos");
-	GLuint colorAttrib = program.getAttrib("color");
 
+	GLuint posAttrib = glGetAttribLocation(program,"pos");
+	GLuint colorAttrib = glGetAttribLocation(program,"color");
 	glEnableVertexAttribArray(posAttrib);
 	glEnableVertexAttribArray(colorAttrib);
 
@@ -85,6 +88,7 @@ int main()
         display.SwapBuffers();
     }
 
+	glDeleteProgram(program);
 
 	glDeleteBuffers(1,&vbo);
 	glDeleteVertexArrays(1,&vao);

@@ -3,6 +3,10 @@
 
 #include <iostream>
 #include <stdint.h>
+#include <GL/glew.h>
+#include <vector>
+#define PRINT(x) std::cout << x << std::endl
+using std::vector;
 
 class Display
 {
@@ -20,6 +24,23 @@ public:
       this->height = height;
       this->title  = title;
     }
+
+
+	void PrintGLInfo()
+	{
+		vector<GLchar *> glinfo;
+
+		glinfo.push_back((GLchar *)glGetString(GL_VERSION));
+		glinfo.push_back((GLchar *)glGetString(GL_SHADING_LANGUAGE_VERSION));
+		glinfo.push_back((GLchar *)glGetString(GL_VENDOR));
+		glinfo.push_back((GLchar *)glGetString(GL_RENDERER));
+		
+		for(auto i : glinfo)
+		{
+			PRINT(i);
+		}
+
+	}
 
     virtual void CleanScreen(float r, float g, float b, float a) = 0;
 
