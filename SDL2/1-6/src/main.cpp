@@ -139,7 +139,6 @@ int main()
     glDeleteShader(vertexShaderID);
     glDeleteShader(fragmentShaderID);
 
-
     SDL_FreeSurface(image);
     glDeleteTextures(1,&tex);
     glDeleteBuffers(1,&ebo);

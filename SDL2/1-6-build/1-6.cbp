@@ -5,7 +5,7 @@
       <Option title="1-6" />
       <Option makefile_is_custom="1" />
       <Option compiler="gcc" />
-      <Option virtualFolders="CMake Files\;" />
+      <Option virtualFolders="CMake Files\;CMake Files\CMakeInclude\;" />
       <Build>
       <Target title="all">
          <Option working_dir="/home/jordy/Projetos/Cpp/opengl/3.0+/SDL2/1-6-build" />
@@ -96,6 +96,12 @@
       </Unit>
       <Unit filename="/home/jordy/Projetos/Cpp/opengl/3.0+/SDL2/1-6/CMakeLists.txt">
           <Option virtualFolder="CMake Files\" />
+      </Unit>
+      <Unit filename="/home/jordy/Projetos/Cpp/opengl/3.0+/SDL2/1-6/CMakeInclude/FindSDL2.cmake">
+          <Option virtualFolder="CMake Files\CMakeInclude\" />
+      </Unit>
+      <Unit filename="/home/jordy/Projetos/Cpp/opengl/3.0+/SDL2/1-6/CMakeInclude/FindSDL2_image.cmake">
+          <Option virtualFolder="CMake Files\CMakeInclude\" />
       </Unit>
    </Project>
 </CodeBlocks_project_file>
