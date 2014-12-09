@@ -19,9 +19,19 @@ public:
 
 	void Link();
 
-	GLuint getAttrib(std::string attrib);
+	GLint getAttrib(std::string attrib);
+	
+	GLint EnableAttrib(std::string attrib);
+
+	GLint DisableAttrib(std::string attrib);
+	
 
 	void BindFragDataLocation(std::string frag,GLuint colorNumber);
+
+	const GLuint getId()
+	{
+		return programID; 
+	}
 
 	virtual ~Program();
 

@@ -16,6 +16,7 @@ int main()
 {
 
     DisplaySDL2 display(0,0,1024,768,"Olá mundo");
+	glm::mat4 model;
 
 
 	GLfloat vertices[] = {
@@ -23,6 +24,11 @@ int main()
 		-0.5f,0.5f,  0.0f,1.0f,0.0f,
 		-0.5f,-0.5f, 0.0f,0.0f,1.0f,
 		 0.5f,-0.5f, 1.0f,1.0f,1.0f
+	};
+
+	GLuint elements[] = {
+		0,1,2,
+		0,2,3,
 	};
 
 	GLuint vao;
@@ -33,7 +39,11 @@ int main()
 	glGenBuffers(1,&vbo);
 	glBindBuffer(GL_ARRAY_BUFFER,vbo);
 	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
-
+	
+	GLuint ebo;
+	glGenBuffers(1,&ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(elements),elements,GL_STATIC_DRAW);
 
 	Shader vertex("vertex.glsl",GL_VERTEX_SHADER);
 	Shader fragment("fragment.glsl",GL_FRAGMENT_SHADER);
@@ -47,30 +57,41 @@ int main()
 	program.Link();
 	program.Use();
 
-	GLuint posAttrib = program.getAttrib("pos");
-	GLuint colorAttrib = program.getAttrib("color");
+	GLuint posAttrib = program.EnableAttrib("pos");
+	GLuint colorAttrib = program.EnableAttrib("color");
 
-	glEnableVertexAttribArray(posAttrib);
-	glEnableVertexAttribArray(colorAttrib);
-
+	GLuint uniformModel = glGetUniformLocation(program.getId(),"model");
+	GLuint uniformView  = glGetUniformLocation(program.getId(),"view");
+	GLuint uniformProj  = glGetUniformLocation(program.getId(),"proj");
 	glVertexAttribPointer(posAttrib,2,GL_FLOAT,GL_FALSE,5*sizeof(GLfloat),0);
 	glVertexAttribPointer(colorAttrib,3,GL_FLOAT,GL_FALSE,5*sizeof(GLfloat),(void *) (2*sizeof(GLfloat)));
 
+	glm::mat4 proj = glm::perspective(45.0f,display.getRatio(),0.1f,100.0f);
+	glm::mat4 view = glm::lookAt( glm::vec3(0,0,2.0f),
+								  glm::vec3(0,0,0),
+								  glm::vec3(0,1.0f,0));
+	glViewport(0,0,display.getWidth(),display.getHeight());
 
+	glUniformMatrix4fv(uniformProj,1,GL_FALSE,glm::value_ptr(proj));
+	glUniformMatrix4fv(uniformView,1,GL_FALSE,glm::value_ptr(view));
 
+	float i = 1;
     while(!display.UserWannaQuit())
     {
+
+		model = glm::rotate(model,i,glm::vec3(0,1,0));
+		glUniformMatrix4fv(uniformModel,1,GL_FALSE,glm::value_ptr(model));
 
         display.Delay(1000/60);
 		glClear(GL_COLOR_BUFFER_BIT  );
         display.CleanScreen(0,0,0,1.0f);
 
-		glDrawArrays(GL_TRIANGLES,0,3);
+		glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
 
         display.SwapBuffers();
     }
 
-
+		
 	glDeleteBuffers(1,&vbo);
 	glDeleteVertexArrays(1,&vao);
 

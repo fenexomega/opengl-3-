@@ -16,13 +16,10 @@ private:
   std::string title;
 public:
 
-    Display(int x,int y, int width, int height, std::string title)
+    Display(int _x,int _y, int _width, int _height, std::string _title)
+		: x(_x), y(_y), width(_width), height(_height),title(_title)
     {
-      this->x 	 = x;
-      this->y  	 = y;
-      this->width  = width;
-      this->height = height;
-      this->title  = title;
+
     }
 
 
@@ -53,12 +50,12 @@ public:
     virtual void Quit() = 0;
 
   //Getters and Setters
-  const float getRatio()
+  const float getRatio() const
   {
     return (float) width/height;
   }
 
-  const int getWidth()
+  const int getWidth() const
   {
     return width;
   }

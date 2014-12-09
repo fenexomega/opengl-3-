@@ -12,10 +12,10 @@ const string Shader::ReadContentFromFile(string filename)
 	return content;
 }
 
-Shader::Shader(string filename,GLenum shaderType)
+Shader::Shader(string _filename,GLenum shaderType) : filename(_filename)
 {
 	this->shaderID = glCreateShader(shaderType);
-	this->filename = filename;
+	compilationErrors = NULL;
 	string shaderSrc = ReadContentFromFile(filename);
 	const GLchar * src = shaderSrc.c_str();
 	glShaderSource(shaderID,1,&src ,0);
@@ -37,6 +37,7 @@ void Shader::ReadErrors()
 		{
 			compilationErrors = new char[logLength];
 			glGetShaderInfoLog(shaderID,logLength,NULL,compilationErrors);	
+			std::cout << "ERRORS:\n" << compilationErrors << std::endl;
 		}
 		return;
 	}
@@ -47,4 +48,6 @@ void Shader::ReadErrors()
 Shader::~Shader()
 {
 	glDeleteShader(shaderID);
+	if(!compilationErrors)
+		delete compilationErrors;
 }

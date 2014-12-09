@@ -3,6 +3,7 @@
 
 #include <GL/glew.h>
 #include <iostream>
+#include <memory>
 
 #include <fstream>
 
@@ -14,7 +15,7 @@ class Shader
 {
 private:
 	string filename;
-	char * compilationErrors;
+	GLchar * compilationErrors;
 	unsigned int shaderID;
 
 	void ReadErrors();
@@ -28,7 +29,7 @@ public:
 		return shaderID;
 	}
 
-	const char * getCompilationErrors()
+	const string getCompilationErrors()
 	{
 		return compilationErrors;
 	}
